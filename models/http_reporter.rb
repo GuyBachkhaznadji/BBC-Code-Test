@@ -17,4 +17,8 @@ class HttpReporter
     return response
   end
 
+  def get_status_code(response)
+    return response.code
+  end
+
 end

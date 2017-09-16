@@ -27,7 +27,10 @@ describe "Http Reporter" do
   end
 
   it " Should record the status code" do
-    skip
+    VCR.use_cassette("valid_url") do
+      result = @http_reporter.http_request(@valid_url)
+      assert_equal( "200", result.code )
+    end
   end
 
   it " Should record the content length" do
