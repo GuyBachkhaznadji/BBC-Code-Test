@@ -11,6 +11,7 @@ describe "Http Reporter" do
   before do
     @http_reporter = HttpReporter.new()
     @valid_addresses_str = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
+    @valid_url = "https://www.bbc.co.uk"
   end
 
   it " Should separate the URLs by line" do
@@ -19,7 +20,10 @@ describe "Http Reporter" do
   end
 
   it " Should make a http GET request to the URL" do
-    skip
+    VCR.use_cassette("valid_url") do
+      result = @http_reporter.http_request(@valid_url)
+      assert_equal( "OK", result.message )
+    end
   end
 
   it " Should record the status code" do

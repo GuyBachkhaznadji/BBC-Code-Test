@@ -11,4 +11,10 @@ class HttpReporter
     return addresses.split
   end
 
+  def http_request(url)
+    uri = URI(url)
+    response = Net::HTTP.get_response(uri)
+    return response
+  end
+
 end
