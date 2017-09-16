@@ -34,7 +34,10 @@ describe "Http Reporter" do
   end
 
   it " Should record the content length" do
-    skip
+    VCR.use_cassette("valid_url") do
+      result = @http_reporter.http_request(@valid_url)
+      assert_equal( "42335", result["Content-Length"] )
+    end
   end
 
   it " Should record the date-time of the response" do
