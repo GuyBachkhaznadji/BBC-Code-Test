@@ -17,6 +17,8 @@ describe "Http Reporter" do
     @invalid_url_pipes = "https:||www.bbc.co.uk"
     @valid_url_html = "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
     @valid_url_jpg = "https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg"
+    @no_server_url = "http://www.bbc.co.uk/missing/thing"
+    
     VCR.use_cassette("valid_url") do
       @valid_response = @http_reporter.http_request(@valid_url)
     end
@@ -114,7 +116,10 @@ describe "Http Reporter" do
   end
 
   it " Should not crash if web server is not responsive" do
-    skip
+    VCR.use_cassette("no_server_url") do
+      result = @http_reporter.http_request(@no_server_url)
+      assert_equal( "Not Found", result.message )
+    end
   end
 
   it " Should timeout request after 10 seconds" do

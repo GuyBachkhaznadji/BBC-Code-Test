@@ -12,9 +12,12 @@ class HttpReporter
   end
 
   def http_request(url)
+   begin
     uri = URI(url)
     response = Net::HTTP.get_response(uri)
     return response
+   rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
+   end
   end
 
   def generate_success_summary(request, response)
