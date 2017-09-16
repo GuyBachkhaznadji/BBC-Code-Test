@@ -32,4 +32,12 @@ class HttpReporter
     return json
   end
 
+  def valid_url?(url)
+    if /\A#{URI::regexp(['http', 'https'])}\z/ =~ url
+      return true
+    else 
+      return false
+    end
+  end
+
 end

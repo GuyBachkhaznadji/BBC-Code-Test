@@ -12,9 +12,15 @@ describe "Http Reporter" do
     @http_reporter = HttpReporter.new()
     @valid_addresses_str = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
     @valid_url = "https://www.bbc.co.uk"
+    @valid_url_http = "http://www.bbc.co.uk"
+    @invalid_url = "https://google.com bad://address"
+    @invalid_url_pipes = "https:||www.bbc.co.uk"
+    @valid_url_html = "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+    @valid_url_jpg = "https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg"
     VCR.use_cassette("valid_url") do
       @valid_response = @http_reporter.http_request(@valid_url)
     end
+
   end
 
   it " Should separate the URLs by line" do
@@ -68,8 +74,34 @@ describe "Http Reporter" do
     assert_equal( expected, result )
   end
 
-  it " Should identify invalid URLs" do
-    skip
+  it " Should identify invalid URLs with spaces" do
+      result = @http_reporter.valid_url?(@invalid_url)
+      assert_equal( false, result )
+  end
+
+  it " Should identify invalid URLs with pipes" do
+      result = @http_reporter.valid_url?(@invalid_url_pipes)
+      assert_equal( false, result )
+  end
+
+  it " Should identify valid URLs starting https" do
+      result = @http_reporter.valid_url?(@valid_url)
+      assert_equal( true, result )
+  end
+
+  it " Should identify valid URLs starting http" do
+      result = @http_reporter.valid_url?(@valid_url_http)
+      assert_equal( true, result )
+  end
+
+  it " Should identify valid URLs ending html" do
+      result = @http_reporter.valid_url?(@valid_url_html)
+      assert_equal( true, result )
+  end
+
+  it " Should identify valid URLs ending jpg" do
+      result = @http_reporter.valid_url?(@valid_url_jpg)
+      assert_equal( true, result )
   end
 
   it " Should record error message for invalid URL" do
