@@ -17,7 +17,7 @@ class HttpReporter
     return response
   end
 
-  def generate_summary(request, response)
+  def generate_success_summary(request, response)
     summary = { 
     "Url" => request, 
     "StatusCode" => response.code, 
@@ -38,6 +38,14 @@ class HttpReporter
     else 
       return false
     end
+  end
+
+  def bad_address_summary(url)
+    summary = { 
+    "Url" => url, 
+    "Error" => "Invalid URL"
+    } 
+    return summary
   end
 
 end

@@ -57,7 +57,7 @@ describe "Http Reporter" do
   end
 
   it " Should generate a summary hash" do
-    result = @http_reporter.generate_summary(@valid_url, @valid_response)
+    result = @http_reporter.generate_success_summary(@valid_url, @valid_response)
     expected = { 
       "Url" => "https://www.bbc.co.uk", 
       "StatusCode" => "200", 
@@ -68,7 +68,7 @@ describe "Http Reporter" do
   end
 
   it " Should convert the request's details as JSON" do
-    summary_hash = @http_reporter.generate_summary(@valid_url, @valid_response)
+    summary_hash = @http_reporter.generate_success_summary(@valid_url, @valid_response)
     result =  @http_reporter.jsonify(summary_hash)
     expected = "{\"Url\":\"https://www.bbc.co.uk\",\"StatusCode\":\"200\",\"ContentLength\":\"42335\",\"Date\":\"Sat, 16 Sep 2017 21:24:09 GMT\"}"    
     assert_equal( expected, result )
@@ -104,12 +104,13 @@ describe "Http Reporter" do
       assert_equal( true, result )
   end
 
-  it " Should record error message for invalid URL" do
-    skip
-  end
-
-  it " Should output JSON with different details for invalid URLs" do
-    skip
+  it " Should generate error message hash error message" do
+    result = @http_reporter.bad_address_summary(@invalid_url)
+     expected = { 
+       "Url" => "https://google.com bad://address", 
+       "Error" => "Invalid URL"
+     } 
+     assert_equal( expected, result )
   end
 
   it " Should not crash if web server is not responsive" do
