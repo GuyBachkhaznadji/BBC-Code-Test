@@ -12,6 +12,9 @@ describe "Http Reporter" do
     @http_reporter = HttpReporter.new()
     @valid_addresses_str = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
     @valid_url = "https://www.bbc.co.uk"
+    VCR.use_cassette("valid_url") do
+      @valid_response = @http_reporter.http_request(@valid_url)
+    end
   end
 
   it " Should separate the URLs by line" do
@@ -45,6 +48,17 @@ describe "Http Reporter" do
       result = @http_reporter.http_request(@valid_url)
       assert_equal( "Sat, 16 Sep 2017 21:24:09 GMT", result["Date"] )
     end
+  end
+
+  it " Should generate a summary hash" do
+    result = @http_reporter.generate_summary(@valid_url, @valid_response)
+    expected = { 
+      "Url" => "https://www.bbc.co.uk", 
+      "StatusCode" => "200", 
+      "ContentLength" => "42335", 
+      "Date" => "Sat, 16 Sep 2017 21:24:09 GMT" 
+    } 
+    assert_equal( expected, result)
   end
 
   it " Should convert the request's details as JSON" do

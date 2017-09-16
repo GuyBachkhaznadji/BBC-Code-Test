@@ -17,8 +17,14 @@ class HttpReporter
     return response
   end
 
-  # def get_status_code(response)
-  #   return response.code
-  # end
+  def generate_summary(request, response)
+    summary = { 
+    "Url" => request, 
+    "StatusCode" => response.code, 
+    "ContentLength" => response["Content-Length"], 
+    "Date" => response["Date"] 
+    } 
+    return summary
+  end
 
 end
