@@ -1,0 +1,38 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
+    ansi (1.5.0)
+    builder (3.2.3)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
+    hashdiff (0.3.6)
+    json (2.1.0)
+    minitest (5.10.3)
+    minitest-reporters (1.1.18)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    public_suffix (3.0.0)
+    ruby-progressbar (1.8.3)
+    safe_yaml (1.0.4)
+    vcr (3.0.3)
+    webmock (3.0.1)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json!
+  minitest!
+  minitest-reporters!
+  vcr!
+  webmock!
+
+BUNDLED WITH
+   1.15.4
