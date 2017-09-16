@@ -27,4 +27,9 @@ class HttpReporter
     return summary
   end
 
+  def jsonify(data)
+    json = JSON.generate(data)
+    return json
+  end
+
 end

@@ -58,11 +58,14 @@ describe "Http Reporter" do
       "ContentLength" => "42335", 
       "Date" => "Sat, 16 Sep 2017 21:24:09 GMT" 
     } 
-    assert_equal( expected, result)
+    assert_equal( expected, result )
   end
 
   it " Should convert the request's details as JSON" do
-    skip
+    summary_hash = @http_reporter.generate_summary(@valid_url, @valid_response)
+    result =  @http_reporter.jsonify(summary_hash)
+    expected = "{\"Url\":\"https://www.bbc.co.uk\",\"StatusCode\":\"200\",\"ContentLength\":\"42335\",\"Date\":\"Sat, 16 Sep 2017 21:24:09 GMT\"}"    
+    assert_equal( expected, result )
   end
 
   it " Should identify invalid URLs" do
