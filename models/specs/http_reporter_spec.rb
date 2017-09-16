@@ -41,7 +41,10 @@ describe "Http Reporter" do
   end
 
   it " Should record the date-time of the response" do
-    skip
+    VCR.use_cassette("valid_url") do
+      result = @http_reporter.http_request(@valid_url)
+      assert_equal( "Sat, 16 Sep 2017 21:24:09 GMT", result["Date"] )
+    end
   end
 
   it " Should convert the request's details as JSON" do
