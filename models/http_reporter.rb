@@ -7,4 +7,8 @@ class HttpReporter
 
   end
 
+  def seperate_addresses(addresses)
+    return addresses.split
+  end
+
 end

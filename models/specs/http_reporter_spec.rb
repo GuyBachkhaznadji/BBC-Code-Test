@@ -9,18 +9,16 @@ Minitest::Reporters.use!( Minitest::Reporters::SpecReporter.new )
 describe "Http Reporter" do
 
   before do
-    @all_valid_http_string = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
+    @http_reporter = HttpReporter.new()
+    @valid_addresses_str = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
   end
 
   it " Should separate the URLs by line" do
-    skip
+    result = @http_reporter.seperate_addresses(@valid_addresses_str)
+    assert_equal( ["https://www.bbc.co.uk", "https://www.theguardian.com/uk"], result )
   end
 
   it " Should make a http GET request to the URL" do
-    skip
-  end
-
-  it " Should check that the URL is valid" do
     skip
   end
 
