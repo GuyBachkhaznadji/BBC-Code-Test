@@ -29,7 +29,7 @@ class HttpReporter
     summary = { 
     "Url" => request, 
     "StatusCode" => response.code, 
-    "ContentLength" => response["Content-Length"], 
+    "ContentLength" => response.content_length.nil? ? response.body.length : response.content_length,
     "Date" => response["Date"] 
     } 
     return summary
@@ -81,7 +81,7 @@ class HttpReporter
         json_summaries << summary_json
       end
     end
-    
+
     return json_summaries
   end
 
