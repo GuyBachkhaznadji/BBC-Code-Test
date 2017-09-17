@@ -10,7 +10,7 @@ describe "Http Reporter" do
 
   before do
     @http_reporter = HttpReporter.new()
-    @valid_addresses_str = "https://www.bbc.co.uk \n https://www.theguardian.com/uk"
+    @valid_addresses_str = "https://www.bbc.co.uk\nhttps://www.theguardian.com/uk"
     @valid_url = "https://www.bbc.co.uk"
     @valid_url_http = "http://www.bbc.co.uk"
     @invalid_url = "https://google.com bad://address"
@@ -125,6 +125,14 @@ describe "Http Reporter" do
   it " Should timeout request after 10 seconds" do
     skip
   end
+
+#   it " Should output a stream of JSON for all addresses entered" do
+#     all_addresses = "http://www.bbc.co.uk/iplayer\nhttps://google.com bad://address\nhttp://www.bbc.co.uk/missing/thing 
+# \nhttp://not.exists.bbc.co.uk/ 
+# \nhttp://www.oracle.com/technetwork/java/javase/downloads/index.html 
+# \nhttps://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg\nhttp://site.mockito.org/"
+#   @http_reporter.check_all_urls(all_addresses)
+#   end
 
   it " Should count all results by status code" do
     skip

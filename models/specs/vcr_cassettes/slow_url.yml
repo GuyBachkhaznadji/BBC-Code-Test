@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.bakmiberdikari.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - www.bakmiberdikari.com
+  response:
+    status:
+      code: 500
+      message: Internal Server Error
+    headers:
+      Date:
+      - Sun, 17 Sep 2017 00:04:25 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - 741d5573fdc8b0d346e9b7368e0354e7=bfc828a8b029445e64c449073e6103dc; path=/
+      P3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"
+      Content-Type:
+      - text/html; charset=utf-8
+      Cache-Control:
+      - no-cache
+      Pragma:
+      - no-cache
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '888'
+      Connection:
+      - close
+    body:
+      encoding: ASCII-8BIT
+      string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html
+        xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-gb\" lang=\"en-gb\" dir=\"ltr\">\n<head>\n\t<title>500
+        - Error: 500</title>\n\t<link rel=\"stylesheet\" href=\"/templates/system/css/error.css\"
+        type=\"text/css\" />\n\t</head>\n<body>\n\t<div class=\"error\">\n\t\t<div
+        id=\"outline\">\n\t\t<div id=\"errorboxoutline\">\n\t\t\t<div id=\"errorboxheader\">500
+        - Duplicate entry 'c33b1fe9c41b2d318dfeddd67ad720d7' for key 'PRIMARY' SQL=INSERT
+        INTO y973g_hitcounter_logs(session_id, user_id, ip, timestart, timelast, counter,
+        browser, timezone, lasturl) \r\n\t\t\t\tVALUES('c33b1fe9c41b2d318dfeddd67ad720d7',
+        '0', '2.121.17.104', '1505606657', '1505606657', '0', 'Ruby', '', '')</div>\n\t\t\t<div
+        id=\"errorboxbody\">\n\t\t\t<p><strong>You may not be able to visit this page
+        because of:</strong></p>\n\t\t\t\t<ol>\n\t\t\t\t\t<li>an <strong>out-of-date
+        bookmark/favourite</strong></li>\n\t\t\t\t\t<li>a search engine that has an
+        <strong>out-of-date listing for this site</strong></li>\n\t\t\t\t\t<li>a <strong>mistyped
+        address</strong></li>\n\t\t\t\t\t<li>you have <strong>no access</strong> to
+        this page</li>\n\t\t\t\t\t<li>The requested resource was not found.</li>\n\t\t\t\t\t<li>An
+        error has occurred while processing your request.</li>\n\t\t\t\t</ol>\n\t\t\t<p><strong>Please
+        try one of the following pages:</strong></p>\n\n\t\t\t\t<ul>\n\t\t\t\t\t<li><a
+        href=\"/index.php\" title=\"Go to the Home Page\">Home Page</a></li>\n\t\t\t\t</ul>\n\n\t\t\t<p>If
+        difficulties persist, please contact the System Administrator of this site
+        and report the error below..</p>\n\t\t\t<div id=\"techinfo\">\n\t\t\t<p>Duplicate
+        entry 'c33b1fe9c41b2d318dfeddd67ad720d7' for key 'PRIMARY' SQL=INSERT INTO
+        y973g_hitcounter_logs(session_id, user_id, ip, timestart, timelast, counter,
+        browser, timezone, lasturl) \r\n\t\t\t\tVALUES('c33b1fe9c41b2d318dfeddd67ad720d7',
+        '0', '2.121.17.104', '1505606657', '1505606657', '0', 'Ruby', '', '')</p>\n\t\t\t<p>\n\t\t\t\t\t\t\t</p>\n\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t</div>\n\t</div>\n</body>\n</html>\n"
+    http_version: 
+  recorded_at: Sun, 17 Sep 2017 00:04:37 GMT
+recorded_with: VCR 3.0.3

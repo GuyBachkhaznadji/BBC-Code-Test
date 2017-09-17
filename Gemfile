@@ -6,5 +6,5 @@ source "https://rubygems.org" do
   gem "vcr"
   gem "minitest"
   gem "minitest-reporters"
-  
+  gem "mocha"
 end

@@ -1,5 +1,7 @@
 require 'net/http'
 require 'json'
+require 'timeout'
+
 
 class HttpReporter
 
@@ -8,7 +10,7 @@ class HttpReporter
   end
 
   def seperate_addresses(addresses)
-    return addresses.split
+    return addresses.split("\n")
   end
 
   def http_request(url)
