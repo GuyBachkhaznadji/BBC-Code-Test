@@ -1,0 +1,1 @@
+system("ruby models/specs/http_reporter_spec.rb")
