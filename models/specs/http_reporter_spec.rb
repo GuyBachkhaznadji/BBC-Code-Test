@@ -155,9 +155,28 @@ describe "Http Reporter" do
   end
 
   it " Should count all results by status code" do
-    codes_array = @http_reporter.get_status_codes(@summary_json_array)
-    result = @http_reporter.count_status_codes(codes_array)
+    status_codes_array = @http_reporter.get_status_codes(@summary_json_array)
+    result = @http_reporter.count_status_codes(status_codes_array)
     assert_equal([{"statusCode"=>"200", "numberOfResponses"=>3}, {"statusCode"=>"301", "numberOfResponses"=>1}, {"statusCode"=>"404", "numberOfResponses"=>1}], result)
+  end
+
+  it " Should from http summary JSON produce the status code summary in JSON" do
+    result = @http_reporter.generate_status_code_summary(@summary_json_array)
+    expected = "[
+  {
+    \"statusCode\": \"200\",
+    \"numberOfResponses\": 3
+  },
+  {
+    \"statusCode\": \"301\",
+    \"numberOfResponses\": 1
+  },
+  {
+    \"statusCode\": \"404\",
+    \"numberOfResponses\": 1
+  }
+]"
+    assert_equal(expected, result)
   end
 
   it " Should timeout request after 10 seconds" do

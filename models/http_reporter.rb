@@ -109,7 +109,7 @@ class HttpReporter
     for status_code in collected_status_codes
 
       # Adds to the counts if this status code matches the unique code but the array of hashes is currently empty.
-      if status_code == unique_status_codes[unique_codes_index] && !status_codes_hashes.empty? &&status_codes_hashes[unique_codes_index]["statusCode"] == status_code
+      if status_code == unique_status_codes[unique_codes_index] && !status_codes_hashes.empty? && status_codes_hashes[unique_codes_index]["statusCode"] == status_code
 
         status_codes_hashes[unique_codes_index]["numberOfResponses"] += 1
       
@@ -133,6 +133,12 @@ class HttpReporter
     end
 
     return status_codes_hashes
+  end
+
+  def generate_status_code_summary(json_array)
+    status_code_array = self.get_status_codes(json_array)
+    status_code_count = self.count_status_codes(status_code_array)
+    return self.jsonify(status_code_count)
   end
 
 end
