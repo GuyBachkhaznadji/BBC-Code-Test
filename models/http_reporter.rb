@@ -10,7 +10,9 @@ class HttpReporter
   end
 
   def seperate_addresses(addresses)
-    return addresses.split("\n")
+    url_array = addresses.split("\n")
+    url_array.delete(" ")
+    return url_array
   end
 
   def http_request(url)
@@ -18,7 +20,8 @@ class HttpReporter
     uri = URI(url)
     response = Net::HTTP.get_response(uri)
     return response
-   rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => error
+   rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, SocketError, Net::ProtocolError => error
+    return false
    end
   end
 
@@ -51,6 +54,35 @@ class HttpReporter
     "Error" => "Invalid URL"
     } 
     return summary
+  end
+
+  def check_all_urls(urls_string)
+    urls_array = self.seperate_addresses(urls_string)
+    json_summaries = []
+
+    for url in urls_array
+
+      if self.valid_url?(url)
+        response = self.http_request(url)
+
+        if response == false
+          summary_hash = self.bad_address_summary(url)
+          summary_json = self.jsonify(summary_hash)
+          json_summaries << summary_json
+        elsif response 
+          summary_hash = self.generate_success_summary(url, response)
+          summary_json = self.jsonify(summary_hash)
+          json_summaries << summary_json
+        end
+
+      elsif !self.valid_url?(url)
+        summary_hash = self.bad_address_summary(url)
+        summary_json = self.jsonify(summary_hash)
+        json_summaries << summary_json
+      end
+    end
+    
+    return json_summaries
   end
 
 end
