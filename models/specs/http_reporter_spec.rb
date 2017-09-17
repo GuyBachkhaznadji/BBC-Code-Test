@@ -12,11 +12,7 @@ describe "Http Reporter" do
     @http_reporter = HttpReporter.new()
     @valid_addresses_str = "https://www.bbc.co.uk\nhttps://www.theguardian.com/uk"
     @valid_url = "https://www.bbc.co.uk"
-    @valid_url_http = "http://www.bbc.co.uk"
     @invalid_url = "https://google.com bad://address"
-    @invalid_url_pipes = "https:||www.bbc.co.uk"
-    @valid_url_html = "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-    @valid_url_jpg = "https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg"
     @no_server_url = "http://www.bbc.co.uk/missing/thing"
     @multiple_addresses = "http://www.bbc.co.uk/iplayer\nhttps://google.com bad://address\nhttp://www.bbc.co.uk/missing/thing"
 
@@ -24,6 +20,9 @@ describe "Http Reporter" do
       @valid_response = @http_reporter.http_request(@valid_url)
     end
 
+    VCR.use_cassette("all_urls", :record => :new_episodes) do
+      @summary_json_array = @http_reporter.summarise_all_urls("http://www.bbc.co.uk/iplayer\nhttps://google.com bad://address\nhttp://www.bbc.co.uk/missing/thing\nhttp://not.exists.bbc.co.uk/\nhttp://www.oracle.com/technetwork/java/javase/downloads/index.html\nhttps://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg\nhttp://site.mockito.org/ ")
+    end
   end
 
   it " Should separate the URLs by line" do
@@ -63,10 +62,10 @@ describe "Http Reporter" do
   it " Should generate a summary hash" do
     result = @http_reporter.generate_success_summary(@valid_url, @valid_response)
     expected = { 
-      "Url" => "https://www.bbc.co.uk", 
-      "StatusCode" => "200", 
-      "ContentLength" => 42335, 
-      "Date" => "Sat, 16 Sep 2017 21:24:09 GMT" 
+      "url" => "https://www.bbc.co.uk", 
+      "statusCode" => "200", 
+      "contentLength" => 42335, 
+      "date" => "Sat, 16 Sep 2017 21:24:09 GMT" 
     } 
     assert_equal( expected, result )
   end
@@ -75,10 +74,10 @@ describe "Http Reporter" do
     summary_hash = @http_reporter.generate_success_summary(@valid_url, @valid_response)
     result =  @http_reporter.jsonify(summary_hash)
     expected = "{
-  \"Url\": \"https://www.bbc.co.uk\",
-  \"StatusCode\": \"200\",
-  \"ContentLength\": 42335,
-  \"Date\": \"Sat, 16 Sep 2017 21:24:09 GMT\"
+  \"url\": \"https://www.bbc.co.uk\",
+  \"statusCode\": \"200\",
+  \"contentLength\": 42335,
+  \"date\": \"Sat, 16 Sep 2017 21:24:09 GMT\"
 }"    
     assert_equal( expected, result )
   end
@@ -89,7 +88,7 @@ describe "Http Reporter" do
   end
 
   it " Should identify invalid URLs with pipes" do
-      result = @http_reporter.valid_url?(@invalid_url_pipes)
+      result = @http_reporter.valid_url?("https:||www.bbc.co.uk")
       assert_equal( false, result )
   end
 
@@ -99,25 +98,25 @@ describe "Http Reporter" do
   end
 
   it " Should identify valid URLs starting http" do
-      result = @http_reporter.valid_url?(@valid_url_http)
+      result = @http_reporter.valid_url?("http://www.bbc.co.uk")
       assert_equal( true, result )
   end
 
   it " Should identify valid URLs ending html" do
-      result = @http_reporter.valid_url?(@valid_url_html)
+      result = @http_reporter.valid_url?("http://www.oracle.com/technetwork/java/javase/downloads/index.html")
       assert_equal( true, result )
   end
 
   it " Should identify valid URLs ending jpg" do
-      result = @http_reporter.valid_url?(@valid_url_jpg)
+      result = @http_reporter.valid_url?("https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg")
       assert_equal( true, result )
   end
 
   it " Should generate error message hash error message" do
     result = @http_reporter.bad_address_summary(@invalid_url)
      expected = { 
-       "Url" => "https://google.com bad://address", 
-       "Error" => "Invalid URL"
+       "url" => "https://google.com bad://address", 
+       "error" => "Invalid URL"
      } 
      assert_equal( expected, result )
   end
@@ -133,29 +132,26 @@ describe "Http Reporter" do
     VCR.use_cassette("all_urls", :record => :new_episodes) do
       result = @http_reporter.summarise_all_urls(@multiple_addresses)
       expected = ["{
-  \"Url\": \"http://www.bbc.co.uk/iplayer\",
-  \"StatusCode\": \"301\",
-  \"ContentLength\": 83,
-  \"Date\": \"Sun, 17 Sep 2017 15:08:59 GMT\"
+  \"url\": \"http://www.bbc.co.uk/iplayer\",
+  \"statusCode\": \"301\",
+  \"contentLength\": 83,
+  \"date\": \"Sun, 17 Sep 2017 15:08:59 GMT\"
 }", "{
-  \"Url\": \"https://google.com bad://address\",
-  \"Error\": \"Invalid URL\"
+  \"url\": \"https://google.com bad://address\",
+  \"error\": \"Invalid URL\"
 }", "{
-  \"Url\": \"http://www.bbc.co.uk/missing/thing\",
-  \"StatusCode\": \"404\",
-  \"ContentLength\": 50228,
-  \"Date\": \"Sun, 17 Sep 2017 15:48:57 GMT\"
+  \"url\": \"http://www.bbc.co.uk/missing/thing\",
+  \"statusCode\": \"404\",
+  \"contentLength\": 50228,
+  \"date\": \"Sun, 17 Sep 2017 15:48:57 GMT\"
 }"]
       assert_equal( expected, result )
     end
   end
 
-  it " Should timeout request after 10 seconds" do
-    skip
-  end
-
-  it " Should count all results by status code" do
-    skip
+  it " Should return an array of status codes" do
+    result = @http_reporter.get_status_codes(@summary_json_array)
+    assert_equal(["301", "404", "200", "200", "200"], result)
   end
 
   it " Should output an array of status code counts" do
@@ -163,6 +159,10 @@ describe "Http Reporter" do
   end
 
   it " Should output JSON array of status codes" do
+    skip
+  end
+
+  it " Should timeout request after 10 seconds" do
     skip
   end
 

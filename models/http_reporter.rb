@@ -30,13 +30,13 @@ class HttpReporter
 
   def generate_success_summary(request, response)
     summary = { 
-    "Url" => request, 
-    "StatusCode" => response.code, 
+    "url" => request, 
+    "statusCode" => response.code, 
 
     # If the response was a multi-part MIME response, the content-length would be null. 
     # In this situation we use the body.length which has lower performance but still reports the correct length.
-    "ContentLength" => response.content_length.nil? ? response.body.length : response.content_length,
-    "Date" => response["Date"] 
+    "contentLength" => response.content_length.nil? ? response.body.length : response.content_length,
+    "date" => response["Date"] 
     } 
     return summary
   end
@@ -56,8 +56,8 @@ class HttpReporter
 
   def bad_address_summary(url)
     summary = { 
-    "Url" => url, 
-    "Error" => "Invalid URL"
+    "url" => url, 
+    "error" => "Invalid URL"
     } 
     return summary
   end
@@ -89,6 +89,13 @@ class HttpReporter
     end
 
     return json_summaries
+  end
+
+  def get_status_codes(json_array)
+    status_code_array = json_array.map{ |json_hash| 
+      JSON.parse(json_hash)["statusCode"]
+    }
+    return status_code_array.compact
   end
 
 end
