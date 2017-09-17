@@ -18,10 +18,11 @@ class HttpReporter
 
   def http_request(url)
    begin
-    uri = URI(url)
-    response = Net::HTTP.get_response(uri)
-    return response
-
+    Timeout::timeout(10) do
+      uri = URI(url)
+      response = Net::HTTP.get_response(uri)
+      return response
+    end
     # Not rescuing Net::HTTPBadResponse as we want to report on 404 requests.
    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError,  Net::HTTPHeaderSyntaxError, SocketError, Net::ProtocolError => error
     return false
@@ -68,6 +69,7 @@ class HttpReporter
 
     for url in urls_array
       url.rstrip!
+
       if self.valid_url?(url)
         response = self.http_request(url)
 

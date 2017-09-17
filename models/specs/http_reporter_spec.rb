@@ -179,8 +179,4 @@ describe "Http Reporter" do
     assert_equal(expected, result)
   end
 
-  it " Should timeout request after 10 seconds" do
-    skip
-  end
-
 end
