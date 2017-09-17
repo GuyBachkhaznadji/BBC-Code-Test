@@ -18,7 +18,7 @@ describe "Http Reporter" do
     @valid_url_html = "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
     @valid_url_jpg = "https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg"
     @no_server_url = "http://www.bbc.co.uk/missing/thing"
-    @all_addresses = "http://www.bbc.co.uk/iplayer\nhttps://google.com bad://address\nhttp://www.bbc.co.uk/missing/thing\nhttp://not.exists.bbc.co.uk/\nhttp://www.oracle.com/technetwork/java/javase/downloads/index.html\nhttps://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg\nhttp://site.mockito.org/\nhtp://i-forgot-the.Transfer"
+    @multiple_addresses = "http://www.bbc.co.uk/iplayer\nhttps://google.com bad://address\nhttp://www.bbc.co.uk/missing/thing"
 
     VCR.use_cassette("valid_url") do
       @valid_response = @http_reporter.http_request(@valid_url)
@@ -27,8 +27,8 @@ describe "Http Reporter" do
   end
 
   it " Should separate the URLs by line" do
-    result = @http_reporter.seperate_addresses(@all_addresses)
-    expected = ["http://www.bbc.co.uk/iplayer", "https://google.com bad://address", "http://www.bbc.co.uk/missing/thing", "http://not.exists.bbc.co.uk/", "http://www.oracle.com/technetwork/java/javase/downloads/index.html", "https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg", "http://site.mockito.org/", "htp://i-forgot-the.Transfer"]
+    result = @http_reporter.seperate_addresses(@multiple_addresses)
+    expected = ["http://www.bbc.co.uk/iplayer", "https://google.com bad://address", "http://www.bbc.co.uk/missing/thing"]
     assert_equal( expected, result )
   end
 
@@ -74,7 +74,12 @@ describe "Http Reporter" do
   it " Should convert the request's details as JSON" do
     summary_hash = @http_reporter.generate_success_summary(@valid_url, @valid_response)
     result =  @http_reporter.jsonify(summary_hash)
-    expected = "{\"Url\":\"https://www.bbc.co.uk\",\"StatusCode\":\"200\",\"ContentLength\":42335,\"Date\":\"Sat, 16 Sep 2017 21:24:09 GMT\"}"    
+    expected = "{
+  \"Url\": \"https://www.bbc.co.uk\",
+  \"StatusCode\": \"200\",
+  \"ContentLength\": 42335,
+  \"Date\": \"Sat, 16 Sep 2017 21:24:09 GMT\"
+}"    
     assert_equal( expected, result )
   end
 
@@ -126,8 +131,21 @@ describe "Http Reporter" do
 
   it " Should output JSON summary for all addresses entered" do
     VCR.use_cassette("all_urls", :record => :new_episodes) do
-      result = @http_reporter.summarise_all_urls(@all_addresses)
-      expected = ["{\"Url\":\"http://www.bbc.co.uk/iplayer\",\"StatusCode\":\"301\",\"ContentLength\":83,\"Date\":\"Sun, 17 Sep 2017 15:08:59 GMT\"}", "{\"Url\":\"https://google.com bad://address\",\"Error\":\"Invalid URL\"}", "{\"Url\":\"http://www.bbc.co.uk/missing/thing\",\"StatusCode\":\"404\",\"ContentLength\":50228,\"Date\":\"Sun, 17 Sep 2017 15:48:57 GMT\"}", "{\"Url\":\"http://not.exists.bbc.co.uk/\",\"Error\":\"Invalid URL\"}", "{\"Url\":\"http://www.oracle.com/technetwork/java/javase/downloads/index.html\",\"StatusCode\":\"200\",\"ContentLength\":65843,\"Date\":\"Sun, 17 Sep 2017 15:56:31 GMT\"}", "{\"Url\":\"https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg\",\"StatusCode\":\"200\",\"ContentLength\":115828,\"Date\":\"Sun, 17 Sep 2017 15:35:33 GMT\"}", "{\"Url\":\"http://site.mockito.org/\",\"StatusCode\":\"200\",\"ContentLength\":7320,\"Date\":\"Sun, 17 Sep 2017 15:35:34 GMT\"}", "{\"Url\":\"htp://i-forgot-the.Transfer\",\"Error\":\"Invalid URL\"}"]
+      result = @http_reporter.summarise_all_urls(@multiple_addresses)
+      expected = ["{
+  \"Url\": \"http://www.bbc.co.uk/iplayer\",
+  \"StatusCode\": \"301\",
+  \"ContentLength\": 83,
+  \"Date\": \"Sun, 17 Sep 2017 15:08:59 GMT\"
+}", "{
+  \"Url\": \"https://google.com bad://address\",
+  \"Error\": \"Invalid URL\"
+}", "{
+  \"Url\": \"http://www.bbc.co.uk/missing/thing\",
+  \"StatusCode\": \"404\",
+  \"ContentLength\": 50228,
+  \"Date\": \"Sun, 17 Sep 2017 15:48:57 GMT\"
+}"]
       assert_equal( expected, result )
     end
   end

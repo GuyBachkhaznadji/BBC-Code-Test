@@ -10,9 +10,10 @@ class HttpReporter
   end
 
   def seperate_addresses(addresses)
-    url_array = addresses.split("\n")
-    url_array.delete(" ")
-    return url_array
+    urls_array = addresses.split("\n")
+    urls_array.delete(" ")
+    urls_array.delete("\t")
+    return urls_array
   end
 
   def http_request(url)
@@ -41,7 +42,7 @@ class HttpReporter
   end
 
   def jsonify(data)
-    json = JSON.generate(data)
+    json = JSON.pretty_generate(data)
     return json
   end
 
