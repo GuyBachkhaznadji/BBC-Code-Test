@@ -36,3 +36,41 @@ Installing bundler is easy! In your Terminal run:
 $ gem install bundler
 ```
 
+We're almost done!
+
+### Gem Dependencies
+Now in the Terminal please navigate to the root directory for this project. Once there we're going to install our dependencies.
+
+In your Terminal simply run:
+
+```
+bundle install
+```
+
+Great once that's finished we're good to go!
+
+## Testing
+This program is written in such a way that even though we're interacting with HTTP requests we don't need an internet connection to test it. 
+
+We're using a really handy Ruby Gem called VCR which allows us to record our test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+
+### Running Tests
+
+Again this is simply. In the projects root directory run the command:
+
+```
+ruby run_tests.rb
+```
+
+## Running
+Great we should be ready to run the app and see if it really works.
+
+To run the app in the projects root directory run the below command:
+
+```
+ruby app.rb
+```
+
+The app is designed to take http requests separated by a new line.
+
+Once you have finshed inputting your http requests and want to see the results, press the "Tab" key followed by the "Enter" key.
