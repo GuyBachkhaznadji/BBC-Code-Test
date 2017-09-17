@@ -98,4 +98,41 @@ class HttpReporter
     return status_code_array.compact
   end
 
+  def count_status_codes(collected_status_codes)
+    status_codes_hashes = [] 
+    collected_status_codes.sort!
+    unique_status_codes = collected_status_codes.uniq
+    unique_codes_index = 0
+
+    # Chose to avoid a nested loop.
+    # Compares the unique codes to all the collected status codes.
+    for status_code in collected_status_codes
+
+      # Adds to the counts if this status code matches the unique code but the array of hashes is currently empty.
+      if status_code == unique_status_codes[unique_codes_index] && !status_codes_hashes.empty? &&status_codes_hashes[unique_codes_index]["statusCode"] == status_code
+
+        status_codes_hashes[unique_codes_index]["numberOfResponses"] += 1
+      
+      # Adds to the count of the hash if that this status code matches it.
+      elsif status_code == unique_status_codes[unique_codes_index] && status_codes_hashes.empty?
+        status_code_hash = {
+          "statusCode" => status_code,
+          "numberOfResponses" => 1
+        }
+        status_codes_hashes << status_code_hash
+      
+      # Generates a hash for that status code if it doesn't already exist.
+      elsif status_code != unique_status_codes[unique_codes_index] && status_code == unique_status_codes[unique_codes_index + 1]
+        status_code_hash = {
+          "statusCode" => status_code,
+          "numberOfResponses" => 1
+        }
+        status_codes_hashes << status_code_hash 
+        unique_codes_index += 1
+      end
+    end
+
+    return status_codes_hashes
+  end
+
 end

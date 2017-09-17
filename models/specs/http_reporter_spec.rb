@@ -154,12 +154,10 @@ describe "Http Reporter" do
     assert_equal(["301", "404", "200", "200", "200"], result)
   end
 
-  it " Should output an array of status code counts" do
-    skip
-  end
-
-  it " Should output JSON array of status codes" do
-    skip
+  it " Should count all results by status code" do
+    codes_array = @http_reporter.get_status_codes(@summary_json_array)
+    result = @http_reporter.count_status_codes(codes_array)
+    assert_equal([{"statusCode"=>"200", "numberOfResponses"=>3}, {"statusCode"=>"301", "numberOfResponses"=>1}, {"statusCode"=>"404", "numberOfResponses"=>1}], result)
   end
 
   it " Should timeout request after 10 seconds" do
