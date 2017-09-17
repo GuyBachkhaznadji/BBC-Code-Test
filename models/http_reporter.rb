@@ -20,7 +20,9 @@ class HttpReporter
     uri = URI(url)
     response = Net::HTTP.get_response(uri)
     return response
-   rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, SocketError, Net::ProtocolError => error
+
+    # Not rescuing Net::HTTPBadResponse as we want to report on 404 requests.
+   rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, EOFError,  Net::HTTPHeaderSyntaxError, SocketError, Net::ProtocolError => error
     return false
    end
   end
@@ -29,6 +31,9 @@ class HttpReporter
     summary = { 
     "Url" => request, 
     "StatusCode" => response.code, 
+
+    # If the response was a multi-part MIME response, the content-length would be null. 
+    # In this situation we use the body.length which has lower performance but still reports the correct length.
     "ContentLength" => response.content_length.nil? ? response.body.length : response.content_length,
     "Date" => response["Date"] 
     } 
@@ -56,7 +61,7 @@ class HttpReporter
     return summary
   end
 
-  def check_all_urls(urls_string)
+  def summarise_all_urls(urls_string)
     urls_array = self.seperate_addresses(urls_string)
     json_summaries = []
 
