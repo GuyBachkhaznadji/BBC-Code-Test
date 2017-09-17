@@ -14,9 +14,7 @@ ruby -v
 
 If that doesn't return the version we'll need to get you set up with Ruby or if the version.
 
-Version 2.3 is the oldest version that is still supported.
-
-If your version is below 2.3 I would recommend updating it by following the Homebrew instructions below. 
+Version 2.3 is the oldest version that is still supported. If your version is below 2.3 I would recommend updating it by following the Homebrew instructions below. 
 
 #### Installing Ruby on macOS with Homebrew
 On OS X El Capitan, Yosemite, Mavericks, and macOS Sierra, Ruby 2.0 is included. OS X Mountain Lion, Lion, and Snow Leopard ship with Ruby 1.8.7.
@@ -95,18 +93,18 @@ If we invite you for an interview we will ask you to modify your program to meet
 * The program is invoked from the command line and it consumes its input from stdin. 
 * The program output is written to stdout and errors are written to stderr. 
 * Input format is a newline separated list of public web addresses, such as:
-- http://www.bbc.co.uk/iplayer 
-- https://google.com bad://address 
-- http://www.bbc.co.uk/missing/thing 
-- http://not.exists.bbc.co.uk/ 
-- http://www.oracle.com/technetwork/java/javase/downloads/index.html 
-- https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg 
-- http://site.mockito.org/ 
+http://www.bbc.co.uk/iplayer 
+https://google.com bad://address 
+http://www.bbc.co.uk/missing/thing 
+http://not.exists.bbc.co.uk/ 
+http://www.oracle.com/technetwork/java/javase/downloads/index.html 
+https://www.pets4homes.co.uk/images/articles/1646/large/kitten-emergencies-signs-to-look-out-for-537479947ec1c.jpg 
+http://site.mockito.org/ 
 
 * The program should make an http GET request to each valid address in its input and record particular properties of the http response in the program output. 
 * The properties of interest are status code, content length and date-time of the response. These are normally available in the http response headers.
 * Output is a stream of JSON format documents that provide information about the http response for each address in the input, such as: 
-* 
+
 { 
 "Url": "http://www.bbc.co.uk/iplayer", 
 "Status_code": 200, 

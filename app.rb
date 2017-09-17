@@ -2,8 +2,8 @@ require_relative( "./models/http_reporter.rb" )
 
 http_reporter = HttpReporter.new()
 
-puts "\nPlease enter a list of the http requests you would like the details of separated by a newline."
-puts "After the list input 'tab' followed by 'enter' to run:"
+puts "\nPlease enter a list of the http requests you would like the details of separated by a new line."
+puts "After your list input the 'Tab' key followed by the 'Enter' key to run:"
 user_input = gets("\t").chomp
 
 puts "\n Making requests..."
