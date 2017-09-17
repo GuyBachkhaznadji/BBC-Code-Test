@@ -12,7 +12,7 @@ In your Terminal / Command Line run:
 ruby -v
 ```
 
-If that doesn't return the version we'll need to get you set up with Ruby or if the version.
+If that doesn't return the version we'll need to get you set up with Ruby.
 
 Version 2.3 is the oldest version that is still supported. If your version is below 2.3 I would recommend updating it by following the Homebrew instructions below. 
 
