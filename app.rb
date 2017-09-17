@@ -2,9 +2,18 @@ require_relative( "./models/http_reporter.rb" )
 
 http_reporter = HttpReporter.new()
 
-puts("\nPlease enter the http requests you would like the details of:")
-http_string = gets.chomp
-response = http_reporter.http_request(http_string)
-summary = http_reporter.generate_success_summary(http_string, response)
+question = "\nPlease enter the http requests you would like the details of:"
 
-puts summary
+puts question
+input = gets.chomp
+
+while (input != 'q') 
+    puts "\n Talking to my friends online..."
+    reports_array = http_reporter.summarise_all_urls(input)
+    
+    for report in reports_array
+      puts report
+    end
+
+  input = gets.chomp
+end

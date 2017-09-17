@@ -66,7 +66,7 @@ class HttpReporter
     json_summaries = []
 
     for url in urls_array
-
+      url.rstrip!
       if self.valid_url?(url)
         response = self.http_request(url)
 
